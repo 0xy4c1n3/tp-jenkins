@@ -1,0 +1,76 @@
+plugins {
+    id 'java'
+    id 'org.sonarqube' version '4.4.0.3356'
+    id 'maven-publish'
+    id 'jacoco'
+}
+
+group = 'org.Allag'
+version = '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation 'io.cucumber:cucumber-java:6.0.0'
+    testImplementation 'io.cucumber:cucumber-junit:6.0.0'
+    testImplementation 'junit:junit:4.12'
+}
+
+
+
+
+jacocoTestReport {
+    dependsOn test    // les tests doivent s'exécuter avant le rapport
+    reports {
+        xml.required = true
+        html.required = true
+        csv.required = false
+    }
+}
+
+sonar {
+    properties {
+        property "sonar.projectKey", "tp7-allag"
+//        property "sonar.host.url", "http://localhost:9000"
+//        property "sonar.login", "admin"
+//        property "sonar.password", "admin"
+        property "sonar.java.binaries", "src/main/resources"
+
+        // Optional: ensure it doesn't try to find libraries either
+        property "sonar.java.libraries", ""
+    }
+}
+test.finalizedBy jacocoTestReport
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            groupId  'Allag'
+            artifactId  'tp7'
+            version  '1.0-SNAPSHOT'
+
+            from components.java
+
+        }
+    }
+
+    repositories {
+        maven {
+            name = "MyMavenRepo"
+            url = uri("https://mymavenrepo.com/repo/wSZ0LWiCpg52kJbbjuuB/")
+            credentials {
+                username = "myMavenRepo"
+                password = "test0007"
+            }
+        }
+    }
+}
+
+
+//Après la publication, Gradle exécute automatiquement sendMail et slackNotify
+tasks.named("publish") {
+    finalizedBy "sendMail"
+    finalizedBy "slackNotify"  // nom exact de la tâche Slack si le plugin en expose une
+}
