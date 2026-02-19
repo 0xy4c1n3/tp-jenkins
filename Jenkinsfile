@@ -60,7 +60,7 @@ pipeline {
                             gradle sonar --no-daemon \
                             -Dsonar.projectKey=tp7-allag \
                             -Dsonar.projectName="TP7 Java Project - Allag" \
-                            -Dsonar.host.url=http://localhost:9000 \
+                            -Dsonar.host.url=http://172.17.0.2:9000 \
                             -Dsonar.token=$SONAR_TOKEN \
                             -Dsonar.java.binaries=build/empty_dir_for_sonar \
                             -Dsonar.java.source=1.8 \
