@@ -69,8 +69,4 @@ publishing {
 }
 
 
-//Après la publication, Gradle exécute automatiquement sendMail et slackNotify
-tasks.named("publish") {
-    finalizedBy "sendMail"
-    finalizedBy "slackNotify"  // nom exact de la tâche Slack si le plugin en expose une
-}
+
